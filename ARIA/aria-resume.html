@@ -1,0 +1,452 @@
+<title>ARIA — Agentic AI Copilot · Portfolio</title>
+<style>
+  :root {
+    /* chosen neutrals: hue-biased toward the indigo accent, not default grey */
+    --ink: #14131f;
+    --paper: #f6f4ef;
+    --panel: #ffffff;
+    --slate: #57536b;
+    --faint: #918da6;
+    --hair: #e6e2da;
+    --signal: #5b4be6;      /* electric indigo — the "agent reasoning" accent */
+    --signal-2: #7d6ff0;
+    --signal-soft: #ece9fd;
+    --glow: #e0873a;        /* warm amber — sparing secondary */
+    --ok: #2f7d52;
+
+    --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+    --body: "Newsreader", Georgia, "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+    --maxw: 62rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ecebf4; --paper: #0c0b14; --panel: #16141f; --slate: #a7a2bd; --faint: #6a6682;
+      --hair: #262336; --signal: #8b7dff; --signal-2: #a99dff; --signal-soft: #1a1630;
+      --glow: #f0a256; --ok: #59b681;
+    }
+  }
+  :root[data-theme="light"] {
+    --ink:#14131f; --paper:#f6f4ef; --panel:#ffffff; --slate:#57536b; --faint:#918da6;
+    --hair:#e6e2da; --signal:#5b4be6; --signal-2:#7d6ff0; --signal-soft:#ece9fd; --glow:#e0873a; --ok:#2f7d52;
+  }
+  :root[data-theme="dark"] {
+    --ink:#ecebf4; --paper:#0c0b14; --panel:#16141f; --slate:#a7a2bd; --faint:#6a6682;
+    --hair:#262336; --signal:#8b7dff; --signal-2:#a99dff; --signal-soft:#1a1630; --glow:#f0a256; --ok:#59b681;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-size: 1.075rem; line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.6rem; }
+  a { color: var(--signal); }
+  ::selection { background: var(--signal-soft); color: var(--ink); }
+
+  /* ============ HERO ============ */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--hair); }
+  .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.9; }
+  .hero .wrap { position: relative; z-index: 2; padding-top: 4.5rem; padding-bottom: 3.5rem; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--signal); margin: 0 0 1.4rem; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .eyebrow::before { content: ""; width: 1.8rem; height: 1px; background: var(--signal); display: inline-block; }
+  h1 {
+    font-family: var(--display); font-weight: 600;
+    font-size: clamp(2.3rem, 6.2vw, 4rem); line-height: 1.0; letter-spacing: -0.025em;
+    margin: 0 0 1.25rem; text-wrap: balance; max-width: 20ch;
+  }
+  h1 em { font-style: normal; color: var(--signal); }
+  .lede {
+    font-size: clamp(1.15rem, 2.4vw, 1.4rem); color: var(--slate);
+    max-width: 42ch; margin: 0 0 2.25rem; line-height: 1.5;
+  }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .metrics { display: flex; flex-wrap: wrap; gap: 2.4rem; }
+  .metric .n { font-family: var(--display); font-weight: 600; font-size: 1.85rem; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .metric .n .u { color: var(--signal); }
+  .metric .l { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint); margin-top: 0.5rem; }
+
+  /* ============ PROCESS ARC ============ */
+  .arc { border-bottom: 1px solid var(--hair); background: color-mix(in srgb, var(--signal) 4%, var(--paper)); }
+  .arc .wrap { padding: 1.6rem 1.6rem; }
+  .arc ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+  .arc li { position: relative; padding: 0.3rem 0.9rem 0.3rem 0; }
+  .arc li .s { font-family: var(--mono); font-size: 0.64rem; color: var(--signal); letter-spacing: 0.1em; }
+  .arc li .t { font-family: var(--display); font-weight: 600; font-size: 0.95rem; margin-top: 0.25rem; letter-spacing: -0.01em; }
+  .arc li .t::after { content: "→"; color: var(--faint); margin-left: 0.6rem; }
+  .arc li:last-child .t::after { content: ""; }
+  @media (max-width: 720px) { .arc ol { grid-template-columns: repeat(2, 1fr); gap: 0.9rem 1.2rem; } .arc li .t::after{content:"";} }
+
+  /* ============ SECTIONS ============ */
+  section.block { padding: 3.5rem 0; border-bottom: 1px solid var(--hair); }
+  .sec-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); margin: 0 0 0.7rem; }
+  .sec-title { font-family: var(--display); font-weight: 600; font-size: clamp(1.5rem, 3.4vw, 2.1rem); letter-spacing: -0.02em; margin: 0 0 0.6rem; text-wrap: balance; }
+  .sec-intro { font-size: 1.12rem; color: var(--slate); max-width: 54ch; margin: 0 0 2rem; }
+  .sec-intro b { color: var(--ink); font-weight: 600; }
+
+  /* headline track: AI */
+  .headline-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--signal); background: var(--signal-soft); padding: 0.35rem 0.75rem; border-radius: 999px;
+    margin-bottom: 1.1rem;
+  }
+  .headline-badge .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 0 0 color-mix(in srgb, var(--signal) 60%, transparent); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--signal) 55%,transparent);} 70%{box-shadow:0 0 0 9px transparent;} 100%{box-shadow:0 0 0 0 transparent;} }
+  @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } }
+
+  ul.ach { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.15rem; }
+  .ach li {
+    display: grid; grid-template-columns: 2.6rem 1fr; gap: 0.4rem 1.1rem;
+    align-items: start; padding-bottom: 1.15rem; border-bottom: 1px dashed var(--hair);
+  }
+  .ach li:last-child { border-bottom: none; padding-bottom: 0; }
+  .ach .idx { font-family: var(--mono); font-size: 0.8rem; color: var(--signal); padding-top: 0.35rem; font-variant-numeric: tabular-nums; }
+  .ach .body { }
+  .ach h3 { font-family: var(--display); font-weight: 600; font-size: 1.18rem; letter-spacing: -0.015em; margin: 0 0 0.4rem; line-height: 1.2; }
+  .ach p { margin: 0; font-size: 1.03rem; line-height: 1.55; color: var(--slate); }
+  .ach p b { color: var(--ink); font-weight: 600; }
+  .ach .stack { margin-top: 0.65rem; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .chip { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.03em; color: var(--slate); border: 1px solid var(--hair); border-radius: 999px; padding: 0.16rem 0.6rem; }
+  .chip.k { color: var(--signal); border-color: color-mix(in srgb, var(--signal) 40%, var(--hair)); }
+
+  /* full-stack breadth: two supporting columns */
+  .breadth { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; }
+  @media (max-width: 720px) { .breadth { grid-template-columns: 1fr; gap: 2.4rem; } }
+  .col h3 { font-family: var(--display); font-weight: 600; font-size: 1.05rem; letter-spacing: 0.01em; margin: 0 0 0.2rem; display: flex; align-items: center; gap: 0.55rem; }
+  .col h3 .tick { font-family: var(--mono); font-size: 0.66rem; color: var(--glow); letter-spacing: 0.08em; text-transform: uppercase; }
+  .col .csub { font-family: var(--mono); font-size: 0.7rem; color: var(--faint); margin: 0 0 1.1rem; }
+  .col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.95rem; }
+  .col li { font-size: 0.99rem; line-height: 1.5; color: var(--slate); padding-left: 1.1rem; position: relative; }
+  .col li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 6px; height: 6px; border-radius: 1px; background: var(--glow); }
+  .col li b { color: var(--ink); font-weight: 600; }
+
+  /* ============ AGENT LOOP VISUAL ============ */
+  .loop-wrap { background: var(--panel); border: 1px solid var(--hair); border-radius: 8px; padding: 1.6rem 1.5rem; }
+  .loop-cap { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin: 0 0 1.2rem; }
+  .loop { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; font-family: var(--mono); font-size: 0.82rem; }
+  .loop .step { border: 1px solid var(--hair); border-radius: 5px; padding: 0.55rem 0.75rem; background: color-mix(in srgb, var(--signal) 3%, var(--panel)); }
+  .loop .step b { color: var(--ink); font-weight: 600; display: block; font-size: 0.86rem; }
+  .loop .step span { color: var(--slate); font-size: 0.72rem; }
+  .loop .arrow { color: var(--signal); font-size: 1.1rem; }
+  .loop .step.agent { border-color: var(--signal); background: var(--signal-soft); }
+  .loop .step.agent b { color: var(--signal); }
+  .loop-note { font-size: 0.95rem; color: var(--slate); margin: 1.2rem 0 0; line-height: 1.5; }
+  .loop-note b { color: var(--ink); font-weight: 600; }
+
+  /* ============ CLOSE / VISION ============ */
+  .close { background: var(--ink); color: var(--paper); border: none; }
+  .close .sec-label { color: color-mix(in srgb, var(--paper) 50%, transparent); }
+  .close .sec-title { color: var(--paper); }
+  .close .sec-intro { color: color-mix(in srgb, var(--paper) 82%, transparent); }
+  .next { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem,1fr)); gap: 1rem; margin-top: 0.5rem; }
+  .ncard { border: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); border-radius: 6px; padding: 1.05rem 1.1rem; }
+  .ncard .h { font-family: var(--display); font-weight: 600; font-size: 1rem; margin: 0 0 0.35rem; color: var(--paper); }
+  .ncard .h .m { color: var(--signal-2); font-family: var(--mono); font-size: 0.78rem; margin-right: 0.4rem; }
+  .ncard p { margin: 0; font-size: 0.92rem; color: color-mix(in srgb, var(--paper) 74%, transparent); line-height: 1.5; }
+
+  /* nested agent tree — the "one copilot, many agents" vision */
+  .tree { margin: 2.2rem 0 2rem; font-family: var(--mono); font-size: 0.82rem; overflow-x: auto; }
+  .tree .lvl { display: flex; flex-direction: column; gap: 0.55rem; }
+  .tree .row { display: flex; gap: 0.55rem; flex-wrap: wrap; }
+  .node2 {
+    border: 1px solid color-mix(in srgb, var(--paper) 20%, transparent);
+    border-radius: 6px; padding: 0.5rem 0.8rem; color: color-mix(in srgb, var(--paper) 80%, transparent);
+    background: color-mix(in srgb, var(--paper) 4%, transparent);
+  }
+  .node2 b { color: var(--paper); font-weight: 600; }
+  .node2.brain { border-color: var(--signal-2); background: color-mix(in srgb, var(--signal) 22%, transparent); color: var(--paper); }
+  .node2.brain b { color: var(--paper); }
+  .node2.sub { font-size: 0.74rem; color: color-mix(in srgb, var(--paper) 62%, transparent); border-style: dashed; }
+  .node2 .live { color: var(--ok); font-weight: 600; }
+  @media (prefers-color-scheme: dark) { .node2 .live { color: #6fd79b; } }
+  :root[data-theme="dark"] .node2 .live { color: #6fd79b; }
+  :root[data-theme="light"] .node2 .live { color: var(--ok); }
+  .tree .caps { display: flex; align-items: center; gap: 0.45rem; margin-left: 0.2rem; }
+  .tree .caps span { font-size: 0.7rem; color: var(--signal-2); }
+  .indent1 { padding-left: 1.6rem; border-left: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); margin-left: 0.6rem; }
+  .indent2 { padding-left: 1.4rem; border-left: 1px dashed color-mix(in srgb, var(--paper) 14%, transparent); margin-left: 0.6rem; }
+  .tier-label { font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: color-mix(in srgb, var(--paper) 45%, transparent); margin-bottom: 0.15rem; }
+
+  .capbar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.8rem 0 0; }
+  .capbar .cap {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.02em;
+    border: 1px solid color-mix(in srgb, var(--paper) 22%, transparent); border-radius: 999px;
+    padding: 0.35rem 0.8rem; color: color-mix(in srgb, var(--paper) 82%, transparent);
+  }
+  .capbar .cap b { color: var(--signal-2); font-weight: 600; }
+
+  footer { padding: 2.25rem 0 3rem; }
+  .foot { font-family: var(--mono); font-size: 0.72rem; color: var(--faint); letter-spacing: 0.03em; line-height: 1.85; }
+  .foot b { color: var(--slate); font-weight: 500; }
+  .foot .row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+</style>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <canvas class="hero-canvas" id="net" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="eyebrow">Agentic AI · Full-Stack · Shipped to Production</p>
+    <h1>I built <em>ARIA</em> — an agentic copilot that plans a salesperson's whole day.</h1>
+    <p class="lede">From <b>user interviews</b> to <b>design docs</b> to a live <b>multi-agent AI system</b> — I owned the reasoning layer, the backend that feeds it, and the realtime UI contracts that surface it. End to end, and built to become <b>one copilot for the whole system</b>.</p>
+    <div class="metrics">
+      <div class="metric"><div class="n">1</div><div class="l">Copilot, whole system</div></div>
+      <div class="metric"><div class="n">n<span class="u">+</span></div><div class="l">Agents &amp; sub-agents</div></div>
+      <div class="metric"><div class="n">2</div><div class="l">Services, full-stack &amp; solo</div></div>
+      <div class="metric"><div class="n">live</div><div class="l">In production</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PROCESS ARC ============ -->
+<nav class="arc" aria-label="How the work unfolded">
+  <div class="wrap">
+    <ol>
+      <li><div class="s">01</div><div class="t">Gathered</div></li>
+      <li><div class="s">02</div><div class="t">Designed</div></li>
+      <li><div class="s">03</div><div class="t">Architected</div></li>
+      <li><div class="s">04</div><div class="t">Built full-stack</div></li>
+      <li><div class="s">05</div><div class="t">Shipped &amp; iterated</div></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ============ HEADLINE: THE AGENTIC AI ============ -->
+<section class="block">
+  <div class="wrap">
+    <span class="headline-badge"><span class="pulse"></span> The headline — agentic AI</span>
+    <p class="sec-label">Reasoning layer · Gemini function-calling · Python / Vertex AI</p>
+    <h2 class="sec-title">An orchestrator with agents that reason for themselves</h2>
+    <p class="sec-intro">Not a prompt-and-pray script. ARIA is a set of <b>autonomous agents</b> that decide what to read, read it through a live tool layer, and reason their way to a structured, defensible plan — designed to grow into a whole copilot, not a one-off feature.</p>
+
+    <ul class="ach">
+      <li>
+        <div class="idx">A1</div>
+        <div class="body">
+          <h3>Designed a multi-agent architecture, from scratch</h3>
+          <p>Architected ARIA as an <b>orchestrator + peer sub-agents</b> — Today's Plan, Client Intelligence, and an AI Pre-Brief playbook — each a <b>Gemini function-calling tool-loop</b> that autonomously sequences its own work: read the calendar, pull the client pipeline, deep-read each candidate, fetch a transcript only when it needs one, then rank and sequence the day. Built the orchestrator to add new agents (plan-reco, docs, email) with no new plumbing.</p>
+          <div class="stack"><span class="chip k">multi-agent orchestration</span><span class="chip">LangGraph-shaped nodes</span><span class="chip">Gemini 2.5 Flash</span><span class="chip k">autonomous tool-loop</span></div>
+        </div>
+      </li>
+      <li>
+        <div class="idx">A2</div>
+        <div class="body">
+          <h3>Made the intelligence trustworthy by design</h3>
+          <p>Drew a hard line between <b>reasoning and truth</b>: the LLM proposes, a deterministic server resolves. So appointment→client linking returns an ID <b>only on an exact, verified match</b> — a real client booking gets linked, an internal "team meeting" correctly stays unlinked, and the model never invents a client. Encoded the day-planning judgment (working-hours, overlaps, gap-filling, priorities) as explicit prompt rules I <b>iterated against real production traces</b>, watching live plans and tightening the reasoning until they were right.</p>
+          <div class="stack"><span class="chip k">no-hallucination guardrails</span><span class="chip">prompt engineering</span><span class="chip">tool-schema design</span><span class="chip">trace-driven iteration</span></div>
+        </div>
+      </li>
+      <li>
+        <div class="idx">A3</div>
+        <div class="body">
+          <h3>Made it reliable enough to run the whole fleet</h3>
+          <p>An AI that plans <b>every agent's day, every night</b> has to stay up. I built fleet-wide pacing so the agents never overrun the model's quota, and a self-healing path so a throttled plan is retried, never silently lost — turning a pipeline that quietly dropped plans into one that finishes every single one.</p>
+          <div class="stack"><span class="chip">fleet-scale reliability</span><span class="chip">graceful backpressure</span><span class="chip k">zero dropped plans</span></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ THE AGENT LOOP VISUAL ============ -->
+<section class="block">
+  <div class="wrap">
+    <p class="sec-label">What "agentic" actually means here</p>
+    <h2 class="sec-title">One agent, thinking in a loop</h2>
+    <p class="sec-intro">Each agent runs a Gemini tool-loop: it <b>chooses</b> the next tool based on what it has learned so far, calls it over gRPC, absorbs the result, and repeats — until it has enough to commit a plan. The reasoning is the agent's; the data is always live.</p>
+    <div class="loop-wrap">
+      <p class="loop-cap">Today's Plan agent · a single run</p>
+      <div class="loop">
+        <div class="step agent"><b>Agent</b><span>Gemini reasoning</span></div>
+        <span class="arrow">→</span>
+        <div class="step"><b>read calendar</b><span>anchors + hours</span></div>
+        <span class="arrow">→</span>
+        <div class="step"><b>list pipeline</b><span>who's due</span></div>
+        <span class="arrow">→</span>
+        <div class="step"><b>deep-read client</b><span>× N, on demand</span></div>
+        <span class="arrow">→</span>
+        <div class="step"><b>resolve appt → client</b><span>exact match</span></div>
+        <span class="arrow">↺</span>
+        <div class="step agent"><b>rank &amp; sequence</b><span>structured plan</span></div>
+      </div>
+      <p class="loop-note">The loop is <b>not hard-coded</b> — the agent picks each step. My job was designing the tools it's allowed to call, the guardrails on what it can trust, and the prompt that makes its choices consistently good.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FULL-STACK BREADTH ============ -->
+<section class="block">
+  <div class="wrap">
+    <p class="sec-label">And I owned the whole stack around it</p>
+    <h2 class="sec-title">The agent is the star — but I built everything it stands on</h2>
+    <p class="sec-intro">An agent is only as good as the system feeding and surfacing it. I designed and shipped both ends myself: the <b>backend</b> that owns the data and serves the agent's tools, and the <b>realtime frontend contracts</b> that put the plan on the agent's screen.</p>
+    <div class="breadth">
+      <div class="col">
+        <h3><span class="tick">Backend</span> The data &amp; tool layer</h3>
+        <p class="csub">Kotlin / Spring · gRPC · PostgreSQL</p>
+        <ul>
+          <li>Designed a <b>stateless split</b> — the AI service reasons and never touches the database; the backend owns all CRM &amp; calendar data and exposes a <b>scoped gRPC tool API</b> the agents call. A clean, safe boundary that let AI features ship without ever risking the source of truth.</li>
+          <li>Built the tools the agents actually use: availability, client pipeline, per-client detail, transcripts, calendar writes, and the exact-match <b>appointment resolver</b> — each one scoped so an agent can only see one agent's data.</li>
+          <li>Ran an <b>async, prioritized</b> generation pipeline so a person waiting on-screen is always served ahead of the overnight bulk run — the interactive path never waits behind a batch.</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3><span class="tick">Frontend</span> The realtime surface</h3>
+        <p class="csub">GraphQL (code-first) · WebSocket subscriptions</p>
+        <ul>
+          <li>Defined a <b>live WebSocket surface</b> that streams the plan to the screen the instant it changes — sectioned and bounded so even a 1,500-client agent renders instantly instead of choking on a huge payload.</li>
+          <li>Shipped a <b>sync-or-wait</b> contract for the on-demand AI Pre-Brief: instant if it's cached, otherwise one round-trip that waits out generation — with the brief modeled as a <b>self-describing blob</b> so the AI can add fields with no schema change or frontend release.</li>
+          <li>Authored the <b>integration contracts and field specs</b> the client team built against — role-gated manager views, resilient type handling, documented shapes — so AI output rendered cleanly on day one.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCT / USER ============ -->
+<section class="block">
+  <div class="wrap">
+    <p class="sec-label">Before any code</p>
+    <h2 class="sec-title">It started with the user, not the model</h2>
+    <p class="sec-intro">I ran the <b>requirements-gathering</b> and wrote the design docs that everything else followed — interviewing on how agents actually run their day, pinning down the sharp product questions (what counts as a "reconnect"? how do daily goal-rings reset across timezones and PTO?), and locking a principle set the whole build held to.</p>
+    <div class="breadth">
+      <div class="col">
+        <h3><span class="tick">Discovery</span> Turned a vague ask into a spec</h3>
+        <p class="csub">user interviews · product questions · design docs</p>
+        <ul>
+          <li>Translated "an AI command center for our agents" into a concrete <b>three-surface product</b> (Dashboard, Today's Plan, Next Actions) with a written vision, phased plan, and explicit open questions for design &amp; product.</li>
+          <li>Grounded every decision in how the work is really done — appointments and blocks are <b>fixed anchors</b>; promised follow-ups, new leads, and high-intent clients get <b>AI-sequenced</b> around them.</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3><span class="tick">Principles</span> Decisions that held for months</h3>
+        <p class="csub">architecture calls · locked constraints</p>
+        <ul>
+          <li>Locked the calls that kept the system coherent: <b>AI is the brain, the backend owns the data</b>; calendar writes are <b>propose → confirm</b>, never unsolicited; deterministic CRM queries stay out of the LLM.</li>
+          <li>Chose an <b>orchestrator from day one</b> over a single-purpose planner — a deliberate bet that this becomes a growing copilot, so the second and third agents dropped in without a rewrite.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSE / VISION ============ -->
+<section class="block close">
+  <div class="wrap">
+    <p class="sec-label">What this becomes</p>
+    <h2 class="sec-title">One copilot for the whole system — a hierarchy of agents that reason, loop, and fix</h2>
+    <p class="sec-intro">Today's Plan was the first agent. The architecture underneath it is built for many: an <b>orchestrator that routes to specialist agents, each of which can spawn its own sub-agents</b> — a tree of intelligence where every node reasons, calls tools, checks its own work, and retries until it's right. Not one model answering a prompt; a <b>system of agents working together</b>.</p>
+
+    <div class="tree">
+      <div class="lvl">
+        <div class="tier-label">Orchestrator</div>
+        <div class="row"><div class="node2 brain"><b>ARIA</b> · routes intent → the right specialist, coordinates results</div></div>
+
+        <div class="indent1">
+          <div class="tier-label">Specialist agents</div>
+          <div class="row">
+            <div class="node2"><b>Today's Plan</b> <span class="live">✓ live</span></div>
+            <div class="node2"><b>Client Intelligence</b> <span class="live">✓ live</span></div>
+            <div class="node2"><b>AI Pre-Brief</b> <span class="live">✓ live</span></div>
+            <div class="node2"><b>Document Processing</b> <span class="live">✓ live</span></div>
+            <div class="node2 sub">Plan Recommendations</div>
+            <div class="node2 sub">Email Copilot</div>
+            <div class="node2 sub">… +n</div>
+          </div>
+
+          <div class="indent2">
+            <div class="tier-label">Sub-agents &amp; reasoning (each agent's own loop)</div>
+            <div class="row">
+              <div class="node2 sub">calendar reasoning</div>
+              <div class="node2 sub">pipeline ranking</div>
+              <div class="node2 sub">self-check &amp; retry</div>
+            </div>
+            <div class="tier-label" style="margin-top:0.7rem;">Tools they call over gRPC</div>
+            <div class="row">
+              <div class="node2 sub">get transcript <span class="live">✓ live</span></div>
+              <div class="node2 sub">client detail <span class="live">✓ live</span></div>
+              <div class="node2 sub">list pipeline <span class="live">✓ live</span></div>
+              <div class="node2 sub">appointment resolver <span class="live">✓ live</span></div>
+              <div class="node2 sub">calendar read / write <span class="live">✓ live</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sec-intro" style="max-width:58ch;">Each agent runs the same core capability I built and proved on Today's Plan — so scaling the copilot isn't a rewrite, it's adding nodes:</p>
+    <div class="capbar">
+      <span class="cap"><b>reason</b> — decide the next move from what it's learned</span>
+      <span class="cap"><b>loop</b> — call tools, absorb results, repeat until confident</span>
+      <span class="cap"><b>fix</b> — check its own output, retry on failure, never drop work</span>
+      <span class="cap"><b>delegate</b> — hand a sub-problem to another agent</span>
+    </div>
+
+    <div class="next" style="margin-top:2.4rem;">
+      <div class="ncard"><p class="h"><span class="m">→</span>Many agents, same spine</p><p>Every new capability — plan reco, documents, email, anything — drops in as a peer or sub-agent on the existing orchestrator and tool layer. No new plumbing.</p></div>
+      <div class="ncard"><p class="h"><span class="m">→</span>Agents that fix themselves</p><p>The reason-loop-verify pattern generalizes: agents that critique their own output, re-plan on failure, and escalate to a peer when stuck.</p></div>
+      <div class="ncard"><p class="h"><span class="m">→</span>Ask ARIA anything</p><p>Swap deterministic routing for an LLM router and the same agent tree serves free-text requests across the whole product — the nodes are already shaped for it.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="foot">
+      <b>Role.</b> Solo end-to-end — user research · design docs · AI/ML · backend · frontend contracts · production<br>
+      <div class="row"><b>Stack.</b> Python · Vertex AI (Gemini) · function-calling agents · Kotlin/Spring · gRPC · GraphQL · WebSockets · PostgreSQL</div>
+      <b>Status.</b> Live in production · verified end-to-end, from a calendar edit to the plan on the agent's screen.
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Ambient "agent network" — a few nodes wiring themselves together. Quiet, subject-appropriate.
+  (function () {
+    var c = document.getElementById('net'); if (!c) return;
+    var ctx = c.getContext('2d'); var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var nodes = [], N = 0, t = 0;
+    function accent() {
+      return getComputedStyle(document.documentElement).getPropertyValue('--signal').trim() || '#5b4be6';
+    }
+    function resize() {
+      var w = c.parentElement.offsetWidth, h = c.parentElement.offsetHeight;
+      c.width = w * DPR; c.height = h * DPR; c.style.width = w + 'px'; c.style.height = h + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      N = Math.max(10, Math.min(22, Math.round(w / 60)));
+      nodes = [];
+      for (var i = 0; i < N; i++) {
+        nodes.push({ x: Math.random() * w, y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.22, vy: (Math.random() - 0.5) * 0.22 });
+      }
+    }
+    function frame() {
+      var w = c.width / DPR, h = c.height / DPR; ctx.clearRect(0, 0, w, h);
+      var col = accent();
+      for (var i = 0; i < N; i++) {
+        var n = nodes[i]; n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1; if (n.y < 0 || n.y > h) n.vy *= -1;
+      }
+      for (var i = 0; i < N; i++) for (var j = i + 1; j < N; j++) {
+        var a = nodes[i], b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.sqrt(dx*dx+dy*dy);
+        if (d < 150) {
+          ctx.globalAlpha = (1 - d / 150) * 0.16; ctx.strokeStyle = col; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+      ctx.globalAlpha = 0.5; ctx.fillStyle = col;
+      for (var i = 0; i < N; i++) { ctx.beginPath(); ctx.arc(nodes[i].x, nodes[i].y, 1.7, 0, 6.29); ctx.fill(); }
+      ctx.globalAlpha = 1;
+      if (!reduce) requestAnimationFrame(frame);
+    }
+    resize(); window.addEventListener('resize', resize);
+    if (reduce) { frame(); } else { requestAnimationFrame(frame); }
+  })();
+</script>

@@ -1,0 +1,374 @@
+<title>Medicare Buddy — AI Plan Advisor · Portfolio</title>
+<style>
+  :root {
+    --ink: #0e1a14;
+    --paper: #f3f7f4;
+    --panel: #ffffff;
+    --slate: #4a6358;
+    --faint: #8aaa97;
+    --hair: #d8e8de;
+    --signal: #00926e;
+    --signal-2: #33b38d;
+    --signal-soft: #e0f5ee;
+    --warm: #d97c2a;
+    --display: system-ui, "Segoe UI", sans-serif;
+    --mono: "Courier New", ui-monospace, monospace;
+    --maxw: 60rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8f3ed; --paper: #08120e; --panel: #101d16; --slate: #7aab92;
+      --faint: #446655; --hair: #1a2e22; --signal: #1fd99a; --signal-2: #56e8b3;
+      --signal-soft: #071a11; --warm: #f0a050;
+    }
+  }
+  :root[data-theme="light"] {
+    --ink:#0e1a14; --paper:#f3f7f4; --panel:#ffffff; --slate:#4a6358; --faint:#8aaa97;
+    --hair:#d8e8de; --signal:#00926e; --signal-2:#33b38d; --signal-soft:#e0f5ee; --warm:#d97c2a;
+  }
+  :root[data-theme="dark"] {
+    --ink:#e8f3ed; --paper:#08120e; --panel:#101d16; --slate:#7aab92;
+    --faint:#446655; --hair:#1a2e22; --signal:#1fd99a; --signal-2:#56e8b3;
+    --signal-soft:#071a11; --warm:#f0a050;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--display); font-size: 1.05rem; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.75rem; }
+  ::selection { background: var(--signal-soft); }
+
+  /* HERO */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--hair); }
+  .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero .wrap { position: relative; z-index: 2; padding-top: 4.5rem; padding-bottom: 3.5rem; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--signal); margin: 0 0 1.4rem; display: flex; align-items: center; gap: 0.75rem;
+  }
+  .eyebrow::before { content: ""; width: 2rem; height: 1px; background: var(--signal); }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.8rem); font-weight: 700; line-height: 1.06;
+    letter-spacing: -0.03em; margin: 0 0 1.2rem; text-wrap: balance; max-width: 22ch;
+  }
+  h1 em { font-style: normal; color: var(--signal); }
+
+  .lede {
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem); color: var(--slate);
+    max-width: 46ch; margin: 0 0 2.25rem; line-height: 1.55;
+  }
+  .lede b { color: var(--ink); font-weight: 600; }
+
+  .metrics { display: flex; flex-wrap: wrap; gap: 2.25rem; }
+  .metric .n {
+    font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .metric .n .u { color: var(--signal); }
+  .metric .l {
+    font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--faint); margin-top: 0.45rem;
+  }
+
+  /* PROCESS STRIP */
+  .arc { border-bottom: 1px solid var(--hair); background: color-mix(in srgb, var(--signal) 4%, var(--paper)); }
+  .arc .wrap { padding: 1.4rem 1.75rem; }
+  .arc ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5,1fr); gap: 0; }
+  .arc li { padding: 0 0.8rem 0 0; }
+  .arc .s { font-family: var(--mono); font-size: 0.62rem; color: var(--signal); letter-spacing: 0.1em; }
+  .arc .t { font-weight: 600; font-size: 0.92rem; margin-top: 0.2rem; letter-spacing: -0.01em; }
+  .arc .t::after { content: "→"; color: var(--faint); margin-left: 0.5rem; }
+  .arc li:last-child .t::after { content: ""; }
+  @media (max-width: 680px) { .arc ol { grid-template-columns: repeat(2,1fr); gap: 1rem; } .arc .t::after{content:"";} }
+
+  /* SECTIONS */
+  section.block { padding: 3.25rem 0; border-bottom: 1px solid var(--hair); }
+  .sec-label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); margin: 0 0 0.6rem; }
+  h2 { font-size: clamp(1.45rem, 3.2vw, 2rem); font-weight: 700; letter-spacing: -0.025em; margin: 0 0 0.55rem; text-wrap: balance; }
+  .sec-intro { font-size: 1.08rem; color: var(--slate); max-width: 52ch; margin: 0 0 2rem; line-height: 1.6; }
+  .sec-intro b { color: var(--ink); font-weight: 600; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--signal); background: var(--signal-soft); padding: 0.32rem 0.72rem;
+    border-radius: 999px; margin-bottom: 1rem;
+  }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--signal); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--signal) 55%,transparent)} 70%{box-shadow:0 0 0 8px transparent} 100%{box-shadow:0 0 0 0 transparent} }
+  @media (prefers-reduced-motion:reduce) { .dot { animation:none; } }
+
+  /* ACHIEVEMENT LIST */
+  ul.ach { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.1rem; }
+  .ach li {
+    display: grid; grid-template-columns: 2.4rem 1fr; gap: 0.3rem 1rem;
+    padding-bottom: 1.1rem; border-bottom: 1px dashed var(--hair);
+  }
+  .ach li:last-child { border-bottom: none; padding-bottom: 0; }
+  .ach .idx { font-family: var(--mono); font-size: 0.78rem; color: var(--signal); padding-top: 0.3rem; font-variant-numeric: tabular-nums; }
+  .ach h3 { font-size: 1.12rem; font-weight: 700; letter-spacing: -0.015em; margin: 0 0 0.38rem; line-height: 1.2; }
+  .ach p { margin: 0; font-size: 1rem; line-height: 1.58; color: var(--slate); }
+  .ach p b { color: var(--ink); font-weight: 600; }
+  .ach .stack { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .chip {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.02em;
+    color: var(--slate); border: 1px solid var(--hair); border-radius: 999px; padding: 0.14rem 0.55rem;
+  }
+  .chip.k { color: var(--signal); border-color: color-mix(in srgb, var(--signal) 35%, var(--hair)); }
+
+  /* AGENT LOOP */
+  .loop-wrap { background: var(--panel); border: 1px solid var(--hair); border-radius: 8px; padding: 1.5rem; }
+  .loop-cap { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin: 0 0 1.1rem; }
+  .loop { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; font-family: var(--mono); font-size: 0.8rem; }
+  .loop .step {
+    border: 1px solid var(--hair); border-radius: 5px; padding: 0.5rem 0.7rem;
+    background: color-mix(in srgb, var(--signal) 3%, var(--panel));
+  }
+  .loop .step b { color: var(--ink); font-weight: 700; display: block; font-size: 0.84rem; }
+  .loop .step span { color: var(--slate); font-size: 0.7rem; }
+  .loop .step.hi { border-color: var(--signal); background: var(--signal-soft); }
+  .loop .step.hi b { color: var(--signal); }
+  .loop .arr { color: var(--signal); font-size: 1rem; }
+  .loop-note { font-size: 0.95rem; color: var(--slate); margin: 1.1rem 0 0; line-height: 1.55; }
+  .loop-note b { color: var(--ink); font-weight: 600; }
+
+  /* TWO COL */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; }
+  @media (max-width: 680px) { .two { grid-template-columns: 1fr; gap: 2rem; } }
+  .col h3 { font-weight: 700; font-size: 1rem; margin: 0 0 0.2rem; display: flex; align-items: center; gap: 0.5rem; }
+  .col .tick { font-family: var(--mono); font-size: 0.64rem; color: var(--warm); letter-spacing: 0.06em; text-transform: uppercase; }
+  .col .sub { font-family: var(--mono); font-size: 0.68rem; color: var(--faint); margin: 0 0 1rem; }
+  .col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; }
+  .col li { font-size: 0.97rem; line-height: 1.55; color: var(--slate); padding-left: 1.05rem; position: relative; }
+  .col li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 5px; height: 5px; border-radius: 1px; background: var(--warm); }
+  .col li b { color: var(--ink); font-weight: 600; }
+
+  /* CLOSE */
+  .close { background: var(--ink); border-bottom: none; }
+  .close .sec-label { color: color-mix(in srgb, var(--paper) 45%, transparent); }
+  .close h2 { color: var(--paper); }
+  .close .sec-intro { color: color-mix(in srgb, var(--paper) 72%, transparent); }
+  .next { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem,1fr)); gap: 0.9rem; margin-top: 0.4rem; }
+  .ncard { border: 1px solid color-mix(in srgb, var(--paper) 14%, transparent); border-radius: 6px; padding: 1rem 1.1rem; }
+  .ncard .h { font-weight: 700; font-size: 0.97rem; margin: 0 0 0.3rem; color: var(--paper); }
+  .ncard .h .m { color: var(--signal-2); font-family: var(--mono); font-size: 0.76rem; margin-right: 0.35rem; }
+  .ncard p { margin: 0; font-size: 0.9rem; color: color-mix(in srgb, var(--paper) 68%, transparent); line-height: 1.5; }
+
+  footer { padding: 2rem 0 3rem; }
+  .foot { font-family: var(--mono); font-size: 0.7rem; color: var(--faint); letter-spacing: 0.02em; line-height: 1.9; }
+  .foot b { color: var(--slate); font-weight: 500; }
+  .foot .row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+</style>
+
+<!-- HERO -->
+<header class="hero">
+  <canvas id="net" class="hero-canvas" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="eyebrow">AI · Full-Stack · Forward-Deployed · Production</p>
+    <h1>I built <em>Medicare Buddy</em> — a real-time AI plan advisor for 4,800+ Medicare plans.</h1>
+    <p class="lede">From <b>system design</b> to a live <b>Gemini tool-calling agent</b> with RAG, WebSocket streaming, and personalized plan cards — I owned the AI reasoning layer, the backend that feeds it, and the frontend contracts that surface it. <b>End to end.</b></p>
+    <div class="metrics">
+      <div class="metric"><div class="n">15</div><div class="l">Tools, one agent loop</div></div>
+      <div class="metric"><div class="n">961<span class="u">k</span></div><div class="l">Chunks in pgvector</div></div>
+      <div class="metric"><div class="n">3</div><div class="l">Plan types — MA, Medigap, PDP</div></div>
+      <div class="metric"><div class="n">live</div><div class="l">coverright.com · ascendinsure.com</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- PROCESS STRIP -->
+<nav class="arc" aria-label="How the work unfolded">
+  <div class="wrap">
+    <ol>
+      <li><div class="s">01</div><div class="t">Designed v2→v3</div></li>
+      <li><div class="s">02</div><div class="t">Built the agent</div></li>
+      <li><div class="s">03</div><div class="t">Owned the RAG pipeline</div></li>
+      <li><div class="s">04</div><div class="t">Shipped WS streaming</div></li>
+      <li><div class="s">05</div><div class="t">Iterated in production</div></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- HEADLINE: AI WORK -->
+<section class="block">
+  <div class="wrap">
+    <span class="badge"><span class="dot"></span>The headline — agentic AI</span>
+    <p class="sec-label">Gemini function-calling · pgvector RAG · Vertex AI</p>
+    <h2>An agent that reasons across plan types, tools, and conversation history</h2>
+    <p class="sec-intro">Not a prompt wrapper. A <b>Gemini tool-calling agent</b> that sequences up to 12 tool calls per turn — choosing SQL, vector search, or recommendation context based on what the question actually needs.</p>
+
+    <ul class="ach">
+      <li>
+        <div class="idx">A1</div>
+        <div class="body">
+          <h3>Designed and built the v3 plan agent from scratch</h3>
+          <p>Architected the collapse of three separate handlers (plan-specific, comparison, recommendation) into <b>one tool-calling agent</b> that handles all plan questions. The agent picks its own tool sequence per turn — SQL for structured data, vector search for coverage rules, rec context for "why was this recommended." Engineered <b>bid_id scope enforcement</b> so the agent can never leak data from plans not on screen, and a <b>12-tool-call safety cap</b> sized exactly for a 3-plan comparison.</p>
+          <div class="stack">
+            <span class="chip k">Gemini 2.5 Flash</span><span class="chip k">function calling</span>
+            <span class="chip">15 tools</span><span class="chip">scope enforcement</span><span class="chip">conversation history</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="idx">A2</div>
+        <div class="body">
+          <h3>Built the full RAG pipeline — embeddings, reranking, semantic cache</h3>
+          <p>Owns the retrieval stack end to end: <b>Vertex AI text-embedding-005</b> (768-dim), pgvector ivfflat index over 961k chunks, <b>cross-encoder reranking</b> (ms-marco-MiniLM) run async to avoid blocking the event loop, and a semantic cache keyed by embedding cosine similarity (&gt;0.92 = hit) — so "What is my premium?" and "What's the monthly premium?" share one cache entry. One query embedding is computed and <b>reused for both cache lookup and retrieval</b>.</p>
+          <div class="stack">
+            <span class="chip k">pgvector RAG</span><span class="chip k">semantic cache</span>
+            <span class="chip">cross-encoder reranker</span><span class="chip">Vertex AI embeddings</span><span class="chip">cosine similarity</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="idx">A3</div>
+        <div class="body">
+          <h3>Engineered plan-type separation across MA, Medigap, and PDP</h3>
+          <p>Three completely different plan types, each with its own data model, SQL tools, and prompt logic. Medigap uses <b>5 dedicated tools</b> (carrier quality, standardised letter benefits, live premium quotes from user demographics), MA uses <b>SQL + vector + fallback chain</b> (agent must exhaust all sources before saying "no data"), and PDP has <b>5 drug-specific tools</b> including insulin $35-cap logic. Prompt instructions enforce type boundaries — the agent for a Medigap plan <b>never calls MA SQL tools</b>.</p>
+          <div class="stack">
+            <span class="chip k">MA / Medigap / PDP</span><span class="chip">plan-type routing</span>
+            <span class="chip">live Medigap premium quotes</span><span class="chip">fallback chain</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="idx">A4</div>
+        <div class="body">
+          <h3>Prompt-engineered the full system — grounding, legal compliance, UX rules</h3>
+          <p>Wrote and iterated the entire prompt architecture: <b>5-category parallel intent router</b>, 11 SQL intent templates, plan-type-specific instructions, guardrail LLM pass (second Gemini call at temp=0, "grounded: true/false"), and legal compliance rules blocking forward-looking guarantees and eligibility commitments. Comparative plan card copy rules ("stands out among your options") and <b>structured clarification tool calls</b> that drive frontend button rendering — all enforced through prompt design, no agent loop code changes.</p>
+          <div class="stack">
+            <span class="chip k">prompt engineering</span><span class="chip k">grounding guardrail</span>
+            <span class="chip">legal compliance</span><span class="chip">parallel classification</span><span class="chip">clarification UX</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- LOOP VISUAL -->
+<section class="block">
+  <div class="wrap">
+    <p class="sec-label">What the agent actually does per turn</p>
+    <h2>One loop, the agent decides everything inside it</h2>
+    <p class="sec-intro">The agent receives the question, session context, and conversation history — then sequences its own tool calls until it has enough to answer.</p>
+    <div class="loop-wrap">
+      <p class="loop-cap">Plan agent · a single turn — user asks "compare OTC benefits across all 3 plans"</p>
+      <div class="loop">
+        <div class="step hi"><b>Agent</b><span>Gemini reasoning</span></div>
+        <span class="arr">→</span>
+        <div class="step"><b>get_ma_plan_sql</b><span>H0001 OTC</span></div>
+        <span class="arr">→</span>
+        <div class="step"><b>get_ma_plan_sql</b><span>H0002 OTC</span></div>
+        <span class="arr">→</span>
+        <div class="step"><b>get_ma_plan_sql</b><span>H0003 OTC</span></div>
+        <span class="arr">→</span>
+        <div class="step"><b>search_plan_docs</b><span>eligible items × 3</span></div>
+        <span class="arr">→</span>
+        <div class="step hi"><b>answer</b><span>comparative, grounded</span></div>
+      </div>
+      <p class="loop-note">The tool sequence is <b>not hard-coded</b> — the agent chose it. My job was designing 15 scoped tools, the guardrail that checks the answer is grounded in their results, and the prompt rules that make the choices consistently right across plan types, question types, and edge cases.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FULL-STACK BREADTH -->
+<section class="block">
+  <div class="wrap">
+    <p class="sec-label">Beyond the AI layer</p>
+    <h2>Good reasoning needs good plumbing — I built both</h2>
+    <p class="sec-intro">The agent's answers are only as good as what feeds and surfaces them. I designed the <b>session model that scopes what it can see</b>, the async backend that keeps it fast, and the <b>WebSocket contracts</b> the frontend renders against.</p>
+    <div class="two">
+      <div class="col">
+        <h3><span class="tick">Backend</span> Session, context &amp; data</h3>
+        <p class="sub">FastAPI · PostgreSQL · Vertex AI · asyncpg</p>
+        <ul>
+          <li>Designed the <b>session context model</b> — page type, visible plans, recommendation context, user demographics — stored per user and scoped to what's on screen. The agent only ever sees what the user can see.</li>
+          <li>Built the <b>recommendation context pipeline</b>: plan engine calls <code>/recommendations/store</code>, Medicare Buddy compresses and indexes by plan type, surfaced to the agent on demand via <code>get_recommendation_context</code>.</li>
+          <li>Engineered <b>parallel async architecture</b>: two Gemini classification calls run simultaneously via <code>asyncio.gather</code>, SQL tool calls parallelized per-plan, one query embedding reused across cache and retrieval — every saved millisecond compounds across plan counts.</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3><span class="tick">Frontend</span> Real-time streaming surface</h3>
+        <p class="sub">WebSocket · structured events · plan highlights API</p>
+        <ul>
+          <li>Built <code>/ws/chat</code> — persistent WebSocket with <b>thinking step indicators</b> (12 named steps, min visibility times), fake word-by-word streaming at 20ms/word, and follow-up questions carried in the <code>done</code> event. Chose fake streaming deliberately — real Gemini streaming caused a second model call producing different answers on multi-plan responses.</li>
+          <li>Designed <code>/plans/highlights</code> — <b>7 LLM-reasoned fields per plan, one Gemini call, parallel across all visible plans</b>. Every card gets a comparative summary ("stands out for lowest estimated cost among your options"), a dimension score breakdown, and plan-specific reasoning — so each plan is evaluated relative to the others, not in isolation.</li>
+          <li>Authored the <b>integration contracts</b> the frontend built against: session init protocol, double-init protection (COALESCE upsert), clarification button rendering via structured <code>ask_clarification</code> tool responses.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section class="block close">
+  <div class="wrap">
+    <p class="sec-label">Where this is going</p>
+    <h2 style="color:var(--paper)">The architecture is already asking to do more</h2>
+    <p class="sec-intro">The plan agent, session model, and highlights pipeline were designed to grow. These are the natural next surfaces — each one a direct extension of what's already live.</p>
+    <div class="next">
+      <div class="ncard">
+        <p class="h"><span class="m">→</span>Live recommendation updates</p>
+        <p>The plan engine already calls <code>/recommendations/store</code>. The next step: when a user asks a question that shifts their priorities, the agent re-calls the plan engine and the UI updates its recommended plan set in real time — chat becomes a recommendation driver, not just an explainer.</p>
+      </div>
+      <div class="ncard">
+        <p class="h"><span class="m">→</span>Plan reasoning cards</p>
+        <p>The highlights pipeline already generates a comparative summary for every visible plan — 7 LLM-scored fields per card, one Gemini call, parallel across all plans. The next layer: surface <b>why each plan was recommended</b> as structured reasoning the user can drill into, not just a score.</p>
+      </div>
+      <div class="ncard">
+        <p class="h"><span class="m">→</span>Explainable tradeoffs</p>
+        <p>Every plan comparison today ends with an answer. The next evolution: the agent surfaces the tradeoff it reasoned through — cost vs. coverage, star rating vs. network breadth — as a visual the user can interrogate. The tool call history is already there; it just needs a rendering layer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="foot">
+      <b>Role.</b> End-to-end — system design · AI/prompt engineering · backend · frontend contracts · production<br>
+      <div class="row"><b>Stack.</b> Python · FastAPI · Gemini 2.5 Flash · Vertex AI · pgvector · PostgreSQL · WebSockets · asyncpg · GKE</div>
+      <b>Live at.</b> coverright.com · ascendinsure.com
+    </p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  var c = document.getElementById('net'); if (!c) return;
+  var ctx = c.getContext('2d');
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nodes = [], N = 0;
+  function accent() { return getComputedStyle(document.documentElement).getPropertyValue('--signal').trim() || '#00926e'; }
+  function resize() {
+    var w = c.parentElement.offsetWidth, h = c.parentElement.offsetHeight;
+    c.width = w * DPR; c.height = h * DPR; c.style.width = w+'px'; c.style.height = h+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    N = Math.max(8, Math.min(20, Math.round(w/65))); nodes = [];
+    for (var i=0;i<N;i++) nodes.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2});
+  }
+  function frame() {
+    var w=c.width/DPR, h=c.height/DPR; ctx.clearRect(0,0,w,h);
+    var col = accent();
+    for (var i=0;i<N;i++){var n=nodes[i];n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>w)n.vx*=-1;if(n.y<0||n.y>h)n.vy*=-1;}
+    for (var i=0;i<N;i++) for (var j=i+1;j<N;j++){
+      var a=nodes[i],b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<140){ctx.globalAlpha=(1-d/140)*.14;ctx.strokeStyle=col;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+    }
+    ctx.globalAlpha=.45; ctx.fillStyle=col;
+    for (var i=0;i<N;i++){ctx.beginPath();ctx.arc(nodes[i].x,nodes[i].y,1.6,0,6.29);ctx.fill();}
+    ctx.globalAlpha=1;
+    if(!reduce) requestAnimationFrame(frame);
+  }
+  resize(); window.addEventListener('resize', resize);
+  if(reduce){frame();}else{requestAnimationFrame(frame);}
+})();
+</script>
